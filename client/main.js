@@ -11,7 +11,7 @@ socket.on('logs', (logData) => {
   logItem.classList.add('text-xs', 'border-b', 'mb-2', 'pb-2');
   logItem.innerHTML += `<p class="text-blue-600">[${logData.date}]</p>`;
   logItem.innerHTML += `<p class="text-gray-600">${logData.message}</p>`;
-  logList.appendChild(logItem);
+  logList.prepend(logItem);
 });
 
 socket.onAny((eventName, ...args) => {

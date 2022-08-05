@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat App</title>
-    <link rel="stylesheet" href="/index.css" />
   </head>
   <body>
     <main class="flex">
@@ -54,18 +53,19 @@
         </div>
       </section>
 
-      <section id="info-section" class="min-h-screen w-1/4">
+      <section id="info-section" class="h-screen w-1/4">
         <section class="h-[50%] max-h-[50%] border-b">
           <div class="text-center p-4 border-b border-gray-300">Online Users</div>
-          <ul class="flex flex-col space-y-4 p-4">
+          <ul class="flex flex-col space-y-4 p-4 overflow-y-auto">
             <li class="bg-blue-200 rounded p-4 relative">
               <span>Lionel Ritchie</span>
               <div class="absolute top-2 right-2 bg-green-600 w-2 h-2 rounded-full"></div>
             </li>
           </ul>
         </section>
-        <section>
+        <section class="h-[50%] max-h-[50%] overflow-auto">
           <div class="text-center p-4 border-b border-gray-300">Logs</div>
+          <ul id="logs" class="w-full p-4 flex flex-col space-y-2"></ul>
         </section>
       </section>
     </main>

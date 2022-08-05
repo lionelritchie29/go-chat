@@ -3,6 +3,7 @@ const { Server } = require('socket.io');
 
 class ChatServer {
   io = null;
+  users = [];
 
   constructor(httpServer) {
     this.io = new Server(httpServer);
@@ -10,12 +11,40 @@ class ChatServer {
 
   start() {
     this.io.on('connection', (socket) => {
-      console.log(`new user: ${socket.id} connected`);
-      this.io.emit('logs', this.createLogMessage(`A new user (${socket.id}) has connected`));
+      socket.emit('initialize-data', this.users);
+
+      socket.on('user-join', (clientUser) => {
+        const user = this.users.find((u) => u.username === clientUser.username);
+
+        if (!user) {
+          this.users.push({
+            id: socket.id,
+            username: clientUser.username,
+            name: clientUser.name,
+            online: true,
+          });
+        } else {
+          (user.id = socket.id), (user.online = true);
+        }
+
+        this.io.emit(
+          'logs',
+          this.createLogMessage(`${clientUser.name} (${clientUser.username}) has joined.`),
+        );
+        this.io.emit('sync-data', this.users);
+      });
+
+      socket.on('logs', (logData) => {
+        this.io.emit('logs', this.createLogMessage(logData.message));
+      });
 
       socket.on('disconnect', () => {
-        console.log(`user ${socket.id} disconnected`);
-        this.io.emit('logs', this.createLogMessage(`A user (${socket.id}) has disconnected`));
+        const idx = this.users.findIndex((u) => u.id === socket.id);
+        const user = this.users[idx];
+        user.online = false;
+
+        this.io.emit('sync-data', this.users);
+        this.io.emit('logs', this.createLogMessage(`${user.name} (${user.username}) has left.`));
       });
     });
   }

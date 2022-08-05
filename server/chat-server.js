@@ -9,7 +9,11 @@ class ChatServer {
 
   start() {
     this.io.on('connection', (socket) => {
-      console.log('new user connected');
+      console.log(`new user connected: ${socket.id}`);
+
+      socket.on('disconnect', () => {
+        console.log(`user ${socket.id} disconnected`);
+      });
     });
   }
 }

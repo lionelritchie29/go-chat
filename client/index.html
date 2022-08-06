@@ -10,43 +10,28 @@
     <main class="flex">
       <section id="room-section" class="w-1/4 border-r border-gray-300">
         <div class="p-4 text-center border-b border-gray-300">Chats</div>
+        <ul id="chat-rooms" class="flex flex-col space-y-2">
+          <li class="p-4 border-b cursor">All</li>
+        </ul>
       </section>
 
-      <section id="chat-section" class="relative min-h-screen w-2/4 border-r border-gray-300">
-        <div class="p-4 border-b border-gray-300">Lionel Ritchie</div>
-        <ul id="chat-messages" class="p-8 flex flex-col space-y-4">
-          <li class="flex justify-start">
-            <div>
-              <span class="block text-sm">Lionel Ritchie</span>
-              <div class="inline-block flex items-end">
-                <div class="p-4 bg-blue-100 rounded-lg">
-                  <span class="block text-sm">Hi, what's up?</span>
-                </div>
-                <small class="block ml-2 text-xs">12.02</small>
-              </div>
-            </div>
-          </li>
+      <section
+        id="chat-section"
+        class="relative h-screen overflow-auto w-2/4 border-r border-gray-300"
+      >
+        <div class="sticky top-0 bg-white p-4 border-b border-gray-300">All</div>
+        <ul id="chat-messages" class="h-full p-8 flex flex-col space-y-4"></ul>
 
-          <li class="flex justify-end">
-            <div>
-              <span class="block text-sm text-right">Me</span>
-              <div class="inline-block flex flex-row-reverse items-end">
-                <div class="p-4 bg-gray-200 rounded-lg">
-                  <span class="block text-sm">Hi, i'm good</span>
-                </div>
-                <small class="block mr-2 text-xs">12.02</small>
-              </div>
-            </div>
-          </li>
-        </ul>
-
-        <div class="absolute bottom-0 left-0 w-full p-4 border-t bg-gray-100">
+        <div class="sticky bottom-0 left-0 w-full p-4 border-t bg-gray-100">
           <form id="chat-input" class="flex">
             <input
               class="block border-l border-t border-b border-gray-300 w-full outline-none px-4 text-sm"
               type="text"
             />
-            <button class="block bg-blue-600 hover:bg-blue-700 font-semibold text-white px-12 py-2">
+            <button
+              type="submit"
+              class="block bg-blue-600 hover:bg-blue-700 font-semibold text-white px-12 py-2"
+            >
               Send
             </button>
           </form>
@@ -70,6 +55,34 @@
       <li class="bg-blue-200 rounded p-4 relative">
         <span id="user-card-name">Name</span>
         <div id="user-card-status" class="absolute top-2 right-2 w-2 h-2 rounded-full"></div>
+      </li>
+    </template>
+
+    <template id="other-chat-bubble">
+      <li class="flex justify-start">
+        <div>
+          <span class="block text-sm" id="other-chat-bubble-name">Name</span>
+          <div class="inline-block flex items-end">
+            <div class="p-4 bg-blue-100 rounded-lg">
+              <span class="block text-sm" id="other-chat-bubble-msg">Hi, what's up?</span>
+            </div>
+            <small class="block ml-2 text-xs" id="other-chat-bubble-time">12.02</small>
+          </div>
+        </div>
+      </li>
+    </template>
+
+    <template id="my-chat-bubble">
+      <li class="flex justify-end">
+        <div>
+          <span class="block text-sm text-right">Me</span>
+          <div class="inline-block flex flex-row-reverse items-end">
+            <div class="p-4 bg-gray-200 rounded-lg">
+              <span class="block text-sm" id="my-chat-bubble-msg">Hi, i'm good</span>
+            </div>
+            <small class="block mr-2 text-xs" id="my-chat-bubble-time">12.02</small>
+          </div>
+        </div>
       </li>
     </template>
 

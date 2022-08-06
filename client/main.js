@@ -13,6 +13,8 @@ window.addEventListener('DOMContentLoaded', () => {
   initialize(socket);
   listenAndHandleSyncEvent(socket);
   listenAndHandleLogEvent(socket);
+  handleChatSend(socket);
+  listenAndHandleGlobalChatEvent(socket);
 });
 
 const initialize = (socket) => {
@@ -23,6 +25,7 @@ const initialize = (socket) => {
     if (existUser) {
       currentUser = existUser;
     } else {
+      currentUser.id = socket.id;
       currentUser.username = username;
       currentUser.name = name;
     }
@@ -61,5 +64,38 @@ const listenAndHandleSyncEvent = (socket) => {
       }
       userContainer.appendChild(userCard);
     });
+  });
+};
+
+const handleChatSend = (socket) => {
+  const form = document.getElementById('chat-input');
+  form.onsubmit = (event) => {
+    event.preventDefault();
+    const message = form.querySelector('input').value;
+    if (message) {
+      socket.emit('global-chat', { from: currentUser, message });
+      form.querySelector('input').value = '';
+    }
+  };
+};
+
+const listenAndHandleGlobalChatEvent = (socket) => {
+  const chatMessagesList = document.getElementById('chat-messages');
+  const otherChatBubbleTemplate = document.getElementById('other-chat-bubble');
+  const myChatBubbleTemplate = document.getElementById('my-chat-bubble');
+
+  socket.on('global-chat', ({ from, message, time }) => {
+    if (from.username === currentUser.username) {
+      const myChatBubble = myChatBubbleTemplate.content.cloneNode(true);
+      myChatBubble.getElementById('my-chat-bubble-msg').innerText = message;
+      myChatBubble.getElementById('my-chat-bubble-time').innerText = time;
+      chatMessagesList.appendChild(myChatBubble);
+    } else {
+      const otherChatBubble = otherChatBubbleTemplate.content.cloneNode(true);
+      otherChatBubble.getElementById('other-chat-bubble-name').innerText = from.name;
+      otherChatBubble.getElementById('other-chat-bubble-msg').innerText = message;
+      otherChatBubble.getElementById('other-chat-bubble-time').innerText = time;
+      chatMessagesList.appendChild(otherChatBubble);
+    }
   });
 };

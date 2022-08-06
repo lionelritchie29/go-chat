@@ -4,6 +4,7 @@ const { Server } = require('socket.io');
 class ChatServer {
   io = null;
   users = [];
+  rooms = ['all'];
 
   constructor(httpServer) {
     this.io = new Server(httpServer);
@@ -38,6 +39,11 @@ class ChatServer {
           );
         }
         this.io.emit('sync-data', this.users);
+      });
+
+      socket.on('global-chat', ({ from, message }) => {
+        const formattedTime = format(new Date(), 'kk:mm');
+        this.io.emit('global-chat', { from, message, time: formattedTime });
       });
 
       socket.on('logs', (logData) => {

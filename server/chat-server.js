@@ -23,15 +23,20 @@ class ChatServer {
             name: clientUser.name,
             online: true,
           });
+
+          this.io.emit(
+            'logs',
+            this.createLogMessage(`${clientUser.name} (${clientUser.username}) has joined.`),
+          );
         } else {
           user.id = socket.id;
           user.online = true;
-        }
 
-        this.io.emit(
-          'logs',
-          this.createLogMessage(`${clientUser.name} (${clientUser.username}) has joined.`),
-        );
+          this.io.emit(
+            'logs',
+            this.createLogMessage(`${clientUser.name} (${clientUser.username}) is online.`),
+          );
+        }
         this.io.emit('sync-data', this.users);
       });
 

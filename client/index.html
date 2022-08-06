@@ -55,13 +55,8 @@
 
       <section id="info-section" class="h-screen w-1/4">
         <section class="h-[50%] max-h-[50%] border-b">
-          <div class="text-center p-4 border-b border-gray-300">Online Users</div>
-          <ul class="flex flex-col space-y-4 p-4 overflow-y-auto">
-            <li class="bg-blue-200 rounded p-4 relative">
-              <span>Lionel Ritchie</span>
-              <div class="absolute top-2 right-2 bg-green-600 w-2 h-2 rounded-full"></div>
-            </li>
-          </ul>
+          <div class="text-center p-4 border-b border-gray-300">Users</div>
+          <ul id="users-container" class="flex flex-col space-y-4 p-4 overflow-y-auto"></ul>
         </section>
         <section class="h-[50%] max-h-[50%] overflow-auto">
           <div class="text-center p-4 border-b border-gray-300">Logs</div>
@@ -69,6 +64,14 @@
         </section>
       </section>
     </main>
+
+    <!-- Templates -->
+    <template id="user-card-template">
+      <li class="bg-blue-200 rounded p-4 relative">
+        <span id="user-card-name">Name</span>
+        <div id="user-card-status" class="absolute top-2 right-2 w-2 h-2 rounded-full"></div>
+      </li>
+    </template>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/socket.io/socket.io.js"></script>

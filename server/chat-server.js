@@ -42,10 +42,12 @@ class ChatServer {
       socket.on('disconnect', () => {
         const idx = this.users.findIndex((u) => u.id === socket.id);
         const user = this.users[idx];
-        user.online = false;
+        if (user) {
+          user.online = false;
+          this.io.emit('logs', this.createLogMessage(`${user.name} (${user.username}) has left.`));
+        }
 
         this.io.emit('sync-data', this.users);
-        this.io.emit('logs', this.createLogMessage(`${user.name} (${user.username}) has left.`));
       });
     });
   }

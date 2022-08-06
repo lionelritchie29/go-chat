@@ -11,16 +11,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const socket = io();
 
   initialize(socket);
-
-  socket.on('sync-data', (users) => {
-    console.log(users);
-    serverUsers = users;
-  });
-
-  socket.on('disconnect', () => {
-    socket.emit('user-left', currentUser);
-  });
-
+  listenAndHandleSyncEvent(socket);
   listenAndHandleLogEvent(socket);
 });
 
@@ -48,5 +39,27 @@ const listenAndHandleLogEvent = (socket) => {
     logItem.innerHTML += `<p class="text-blue-600">[${logData.date}]</p>`;
     logItem.innerHTML += `<p class="text-gray-600">${logData.message}</p>`;
     logList.prepend(logItem);
+  });
+};
+
+const listenAndHandleSyncEvent = (socket) => {
+  socket.on('sync-data', (users) => {
+    serverUsers = users;
+
+    const userContainer = document.getElementById('users-container');
+    const userCardTemplate = document.getElementById('user-card-template');
+
+    userContainer.innerHTML = '';
+    users.forEach((user) => {
+      const userCard = userCardTemplate.content.cloneNode(true);
+      userCard.querySelector('li').title = `username: ${user.username}`;
+      userCard.getElementById('user-card-name').innerText = user.name;
+      if (user.online) {
+        userCard.getElementById('user-card-status').classList.add('bg-green-600');
+      } else {
+        userCard.getElementById('user-card-status').classList.add('bg-gray-600');
+      }
+      userContainer.appendChild(userCard);
+    });
   });
 };

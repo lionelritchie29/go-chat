@@ -24,7 +24,8 @@ class ChatServer {
             online: true,
           });
         } else {
-          (user.id = socket.id), (user.online = true);
+          user.id = socket.id;
+          user.online = true;
         }
 
         this.io.emit(

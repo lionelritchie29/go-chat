@@ -1,29 +1,44 @@
 export const getUserInputData = (users) => {
   let username = '';
   let name = '';
+  let existUser = null;
 
-  const validation = {
-    username: false,
-    name: false,
-  };
+  while (true) {
+    username = getAndValidateUsername(users);
+    existUser = users.find((u) => u.username === username);
+    if (!existUser) break;
+    if (!existUser.online) break;
+    if (existUser.online) {
+      alert('ups, user with that username is already online');
+    }
+  }
 
-  while (!validation.username) {
+  if (!existUser) {
+    name = getAndValidateName();
+  }
+
+  return { username, name, existUser };
+};
+
+const getAndValidateUsername = (users) => {
+  let username = '';
+  while (true) {
     username = prompt('Input username (no space, max 12 characters):');
     if (username && username.length <= 12 && !username.includes(' ')) {
-      if (users.find((u) => u.username === username)) {
-        alert('Ups, username already exist');
-      } else {
-        validation.username = true;
-      }
+      break;
     }
   }
 
-  while (!validation.name) {
+  return username;
+};
+
+const getAndValidateName = () => {
+  let name = '';
+  while (true) {
     name = prompt('Input name (max 24 characters): ');
     if (name && name.length <= 24) {
-      validation.name = true;
+      break;
     }
   }
-
-  return { username, name };
+  return name;
 };

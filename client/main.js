@@ -27,25 +27,15 @@ window.addEventListener('DOMContentLoaded', () => {
 const initialize = (socket) => {
   socket.once('initialize-data', (users) => {
     serverUsers = users;
-
-    let existUser = null;
-    while (true) {
-      const loginUsername = prompt('Input your username: ');
-      existUser = users.find((u) => u.username === loginUsername);
-      if (!existUser) break;
-      if (!existUser.online) break;
-      if (existUser.online) {
-        alert('ups, user with that username is already online');
-      }
-    }
+    const { username, name, existUser } = getUserInputData(users);
 
     if (existUser) {
       currentUser = existUser;
     } else {
-      const { username, name } = getUserInputData(users);
       currentUser.username = username;
       currentUser.name = name;
     }
+
     socket.emit('user-join', currentUser);
   });
 };
